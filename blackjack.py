@@ -27,16 +27,16 @@ def total(turn):
     face = ['J', 'Q', 'K']
 
     for card in turn:
-        if card in range(1,11):
+        if card in range(1, 11):
             total += card
         elif card in face:
-            total += 1
-        else:
-            if total > 11:
+            total += 10
+        else:  
+            if total > 10:
                 total += 1
             else:
                 total += 11
-        return total
+    return total
     
 def reveal_dealer_hand():
     if len(dealer_hand) == 2:
@@ -57,8 +57,37 @@ while player_in or dealer_in:
     print(f"Dealer has {reveal_dealer_hand()} and X")
     print(f"You have {player_hand} for a total of {total(player_hand)}")
     if player_in:
-        stay_or_hit = input("1: Stay\n2: Hit")
+        while True:
+            stay_or_hit = input("1: Stay\n2: Hit\n")
+            if stay_or_hit in ['1', '2']:
+                break
+            print("Invalid choice. Please choose 1 or 2.")
     if total(dealer_hand) > 16:
         dealer_in = False
     else:
         deal_card(dealer_hand)
+    if stay_or_hit == '1':
+        player_in = False
+    else: 
+        deal_card(player_hand)
+    if total(player_hand) >= 21:
+        break
+    elif total(dealer_hand) >= 21:
+        break
+
+if total(player_hand) == 21:
+    print(f"Player has blackjack!\n {player_hand}")
+
+elif total(dealer_hand) == 21:
+    print(f"Dealer has blackjack!\n {dealer_hand}")
+
+elif total(player_hand) > 21:
+    print(f"Player has busted!\n {player_hand}")
+
+elif total(dealer_hand) > 21:
+    print(f"Dealer has busted! \n {dealer_hand}" )
+
+elif 21 - total(dealer_hand) > 21 - total(player_hand):
+    print(f"Dealer has {total(dealer_hand)} and player has {total(player_hand)}.\n Player Wins!")
+elif 21 - total(player_hand) > 21 - total(dealer_hand):
+    print(f"Player has {total(player_hand)} and dealer has {total(dealer_hand)}.\n Dealer Wins!")
